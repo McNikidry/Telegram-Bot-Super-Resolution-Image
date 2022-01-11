@@ -91,9 +91,10 @@ class Generator(nn.Module):
             nn.PReLU()
         )
 
-        self.residual_block = nn.ModuleList()
+        residual_block = []
         for i in range(num_of_res_layers):
-            self.residual_block.append(ConvResBlock(self.out_channels))
+            residual_block.append(ConvResBlock(self.out_channels))
+        self.residual_block = nn.Sequential(*residual_block)
 
         self.conv_2 = nn.Sequential(
             nn.Conv2d(
