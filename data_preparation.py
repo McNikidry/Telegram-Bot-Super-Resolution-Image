@@ -23,8 +23,7 @@ class DatasetSuperResolution(Dataset):
 
         if mode == "train":
             self.hr_transforms = transforms.Compose([
-                transforms.RandomCrop(image_size, pad_if_needed = True),
-                transforms.RandomRotation(90)
+                transforms.RandomCrop(image_size, pad_if_needed = True)
             ])
         else:
             self.hr_transforms = transforms.CenterCrop(image_size, pad_if_needed = True)
@@ -37,7 +36,7 @@ class DatasetSuperResolution(Dataset):
 
     def __getitem__(self, _index: int) -> [torch.Tensor, torch.Tensor]:
         image = io.imread(self.files[_index])
-        image = transforms.ToTensor()(image)
+        image = ToTensor()(image)
 
         hr_image = self.hr_transforms(image)
         lr_image = self.lr_transforms(hr_image)
