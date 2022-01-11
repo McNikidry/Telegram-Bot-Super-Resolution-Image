@@ -36,7 +36,7 @@ class DatasetSuperResolution(Dataset):
 
     def __getitem__(self, _index: int) -> [torch.Tensor, torch.Tensor]:
         image = io.imread(self.files[_index])
-        image = ToTensor()(image)
+        image = transforms.ToTensor()(image)
 
         hr_image = self.hr_transforms(image)
         lr_image = self.lr_transforms(hr_image)
