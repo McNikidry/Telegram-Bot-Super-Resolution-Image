@@ -201,7 +201,8 @@ class Discriminator(nn.Module):
   def __init__(self,
                in_channels_size: int = 3,
                out_channels_size: int = 64,
-               layer_size: int = 1000):
+               layer_size: int = 1000
+               ):
     
 
     super(Discriminator, self).__init__()
@@ -223,7 +224,7 @@ class Discriminator(nn.Module):
     self.conv_block_6 = convBlockDiscriminator(1, 512, 512)
     self.conv_block_7 = convBlockDiscriminator(2, 512, 512)
     
-    self.linear_block = nn.Sequential(nn.Linear(512, layer_size), 
+    self.linear_block = nn.Sequential(nn.Linear(512*64*64, layer_size),
                                       nn.LeakyReLU(inplace=True),
                                       nn.Linear(layer_size, 1))
 
@@ -265,7 +266,8 @@ class Discriminator(nn.Module):
     out = self.conv_block_7(out)
     
     out = out.flatten(start_dim=1)
-    
+
+
     out = self.linear_block(out) 
 
     return F.sigmoid(out)
