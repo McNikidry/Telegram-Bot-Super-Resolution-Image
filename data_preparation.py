@@ -26,7 +26,7 @@ class DatasetSuperResolution(Dataset):
                 transforms.RandomCrop(image_size, pad_if_needed = True)
             ])
         else:
-            self.hr_transforms = transforms.CenterCrop(image_size, pad_if_needed = True)
+            self.hr_transforms = transforms.CenterCrop(image_size)
 
         self.lr_transforms = transforms.Resize(
             image_size // upscale_factor,

@@ -64,8 +64,7 @@ class Generator(nn.Module):
         https://arxiv.org/pdf/1609.04802.pdf
     """
 
-    def __init__(
-            self,
+    def __init__(self,
             input_channels: int = 3,
             out_channels: int = 64,
             input_kernel_size: int = 9,
@@ -174,9 +173,9 @@ Discriminator's block of the model
 """
 
 class convBlockDiscriminator(nn.Module):
-    '''
-    Block in the discriminator with different stride and in/out channels.
-    '''
+    # '''
+    # Block in the discriminator with different stride and in/out channels.
+    # '''
   def __init__(self,
                stride_size: int = 1,
                in_channels_size: int = 64,
@@ -194,10 +193,10 @@ class convBlockDiscriminator(nn.Module):
 
 
 class Discriminator(nn.Module):
-    """
-    Discriminator implementation of SRGAN from the article:
-        https://arxiv.org/pdf/1609.04802.pdf
-    """
+    # """
+    # Discriminator implementation of SRGAN from the article:
+    #     https://arxiv.org/pdf/1609.04802.pdf
+    # """
   def __init__(self,
                in_channels_size: int = 3,
                out_channels_size: int = 64,
