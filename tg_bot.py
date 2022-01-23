@@ -22,8 +22,8 @@ logging.basicConfig(format = '%(asctime)s - %(name)s - %(levelname)s - %(message
 start_text = "Hi! I'm a bot which can help you to increase your image resolution. " \
              "Please, send me a picture, which quality you want to improve."
 
-path_to_model = 'C:/Users/k.kharitonov/Desktop/Projects/SR_tg_bot/srResNet.pt'
-
+path_to_model = 'weights/srResNet.pt'
+path_to_image = 'images'
 
 def start(update: Update, context: CallbackContext):
     context.bot.send_message(chat_id = update.effective_chat.id, text = start_text)
@@ -36,8 +36,8 @@ def process_image(update: Update, context: CallbackContext):
     lr_image_tensor = transforms.functional.to_tensor(test_im).unsqueeze(0)
     output = inference(path_to_model, lr_image_tensor)
     output = output.squeeze()
-    save_image(output, 'C:/Users/k.kharitonov/Desktop/Projects/SR_tg_bot/res_image.png')
-    context.bot.send_photo(chat_id, open('C:/Users/k.kharitonov/Desktop/Projects/SR_tg_bot/res_image.png', 'rb'))
+    save_image(output, 'images/res_image.png')
+    context.bot.send_photo(chat_id, open('images/res_image.png', 'rb'))
 
 
 photo_handler = MessageHandler(Filters.photo, process_image)
