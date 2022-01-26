@@ -186,19 +186,19 @@ class EAM(nn.Module):
         c = torch.cat([b_1, b_2], dim = 1)
 
         x1 = self.conc_conv(c)
-        x1 += x
+        x1_1 = x1 + x
 
         x2 = self.second_block(x1)
-        x2 += x1
+        x2_1 = x2 + x1
 
-        x3 = self.third_block(x2)
-        x3 += x2
+        x3 = self.third_block(x2_1)
+        x3_1 = x3 + x2
 
-        x4 = self.feature_attention(x3)
+        x4 = self.feature_attention(x3_1)
         x4 = self.fourth_block(x4)
-        x4 *= x3
+        x5 = x4 * x3
 
-        output = x + x4
+        output = x + x5
 
         return output
 
@@ -264,7 +264,8 @@ class RidNet(nn.Module):
 
         x1 = self.feature_extraction(x)
         x2 = self.residual_block(x1)
-        x2 += x1
-        x3 = self.last_conv(x2)
-        output = x + x3
+        x3 = x2 + x1
+        x4 = self.last_conv(x2)
+        output = x + x4
         return output
+
