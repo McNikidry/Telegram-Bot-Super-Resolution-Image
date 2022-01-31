@@ -269,3 +269,73 @@ class RidNet(nn.Module):
         output = x + x4
         return output
 
+
+class DnCNN(nn.Module):
+
+    def __init__(
+            self,
+            in_channels: int = 3,
+            num_of_mid_layers: int = 10
+
+    ):
+        super(DnCNN, self).__init__()
+
+        self.first_layer = nn.Sequential(
+            nn.Conv2d(
+                in_channels = in_channels,
+                out_channels = 64,
+                kernel_size = 3,
+                stride = 1,
+                padding = 1
+            ),
+            nn.ReLU()
+        )
+
+        mid_block = []
+        for i in range(num_of_mid_layers):
+            mid_block.append(nn.Sequential(
+                nn.Conv2d(
+                    in_channels = 64,
+                    out_channels = 64,
+                    kernel_size = 3,
+                    stride = 1,
+                    padding = 1
+                ),
+                nn.BatchNorm2d(64),
+                nn.ReLU()
+            ))
+        self.mid_block = nn.Sequential(*mid_block)
+
+        self.last_layer = nn.Conv2d(
+            in_channels = 64,
+            out_channels = 3,
+            kernel_size = 3,
+            stride = 1,
+            padding = 1
+        )
+
+        self._initialize_weights()
+
+    def _initialize_weights(self) -> None:
+        """
+            Weights initialization.
+            For convolutional blocks there is "He initialization".
+            :return:
+                None
+        """
+        for module in self.modules():
+            if isinstance(module, nn.Conv2d):
+                nn.init.kaiming_normal_(module.weight)
+                if module.bias is not None:
+                    nn.init.constant_(module.bias, 0)
+            elif isinstance(module, nn.BatchNorm2d):
+                nn.init.constant_(module.weight, 1)
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        noise = self.first_layer(x)
+        noise = self.mid_block(noise)
+        noise = self.last_layer(noise)
+        output = x - noise
+        return output
+
+    nn.MSELoss
